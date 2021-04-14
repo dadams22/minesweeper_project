@@ -62,7 +62,8 @@ class MinesweeperGame:
                 elif self.is_bomb(x, y):
                     row.append(' * ')
                 else:
-                    row.append(' 0 ')
+                    bomb_count = self.get_neighboring_bomb_count(x, y)
+                    row.append(' %d ' % bomb_count)
             rows.append(row)
 
         rows = ['|'.join(row) for row in rows]
