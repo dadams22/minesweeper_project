@@ -13,3 +13,20 @@ class MinesweeperGame:
 
     def _index(self, x: int, y: int):
         return (y * self.height) + x
+
+    def __str__(self):
+        rows = []
+        for y in range(self.height):
+            row = []
+            for x in range(self.width):
+                index = self._index(x, y)
+                if self.covered[index]:
+                    row.append('   ')
+                elif self.bombs[index]:
+                    row.append(' * ')
+                else:
+                    row.append(' 0 ')
+            rows.append(row)
+
+        rows = ['|'.join(row) for row in rows]
+        return '\n'.join(rows)
