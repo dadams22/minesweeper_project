@@ -13,7 +13,7 @@ class MinesweeperGame:
             for x in range(self.width):
                 neighbors = self._generate_neighbor_coords(x, y)
                 bomb_count = [self.is_bomb(*neighbor) for neighbor in neighbors].count(True)
-                self.neighboring_bomb_counts[self._index(x, y)] = bomb_count
+                self.neighboring_bomb_counts.append(bomb_count)
 
     def is_covered(self, x: int, y: int):
         return self.covered[self._index(x, y)]
