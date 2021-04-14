@@ -12,7 +12,7 @@ class MinesweeperGame:
         return self.covered[self._index(x, y)]
 
     def _index(self, x: int, y: int):
-        return (y * self.height) + x
+        return (y * self.width) + x
 
     def __str__(self):
         rows = []
