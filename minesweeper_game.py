@@ -8,8 +8,14 @@ class MinesweeperGame:
         self.bombs = [bomb == '1' for bomb in bombs]
         self.covered = [True] * (width * height)
 
-    def is_covered(self, x, y):
+    def is_covered(self, x: int, y: int):
         return self.covered[self._index(x, y)]
+
+    def uncover(self, x: int, y: int):
+        self.covered[self._index(x, y)] = False
+
+    def is_bomb(self, x: int, y: int):
+        return self.bombs[self._index(x, y)]
 
     def _index(self, x: int, y: int):
         return (y * self.width) + x
@@ -19,10 +25,9 @@ class MinesweeperGame:
         for y in range(self.height):
             row = []
             for x in range(self.width):
-                index = self._index(x, y)
-                if self.covered[index]:
+                if self.is_covered(x, y):
                     row.append('   ')
-                elif self.bombs[index]:
+                elif self.is_bomb(x, y):
                     row.append(' * ')
                 else:
                     row.append(' 0 ')
