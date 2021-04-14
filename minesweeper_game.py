@@ -1,5 +1,3 @@
-
-
 class MinesweeperGame:
     def __init__(self, bombs: str, width: int, height: int):
         self.width = width
