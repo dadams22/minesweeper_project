@@ -34,10 +34,32 @@ class MinesweeperGame:
     def is_bomb(self, x: int, y: int):
         return self.bombs[self._index(x, y)]
 
+    def get_neighbors(self, x: int, y: int):
+        neighbor_translations = [
+            (-1, -1), (-1, 0), (-1, 1),
+            (0, -1), (0, 1),
+            (1, -1), (1, 0), (1, 1),
+        ]
+
+        neighbor_coords = []
+        for x_shift, y_shift in neighbor_translations:
+            new_x = x + x_shift
+            new_y = y + y_shift
+            if 0 < new_x < self.width and 0 < new_y < self.height:
+                neighbor_coords.append((x, y))
+
+        return neighbor_coords
+
     def get_covered_neighbors(self, x: int, y: int):
         return [
-            neighbor for neighbor in self._generate_neighbor_coords(x, y)
+            neighbor for neighbor in self.get_neighbors(x, y)
             if self.is_covered(*neighbor)
+        ]
+
+    def get_uncovered_neighbors(self, x: int, y: int):
+        return [
+            neighbor for neighbor in self.get_neighbors(x, y)
+            if not self.is_covered(*neighbor)
         ]
 
     def get_neighboring_bomb_count(self, x: int, y: int):
@@ -55,22 +77,6 @@ class MinesweeperGame:
             raise ValueError('The square at (%d, %d) is already flagged' % (x, y))
 
         self.flags.append((x, y))
-
-    def _generate_neighbor_coords(self, x: int, y: int):
-        neighbor_translations = [
-            (-1, -1), (-1, 0), (-1, 1),
-            (0, -1), (0, 1),
-            (1, -1), (1, 0), (1, 1),
-        ]
-
-        neighbor_coords = []
-        for x_shift, y_shift in neighbor_translations:
-            new_x = x + x_shift
-            new_y = y + y_shift
-            if 0 < new_x < self.width and 0 < new_y < self.height:
-                neighbor_coords.append((x, y))
-
-        return neighbor_coords
 
     def _index(self, x: int, y: int):
         return (y * self.width) + x
