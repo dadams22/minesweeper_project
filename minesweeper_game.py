@@ -9,14 +9,32 @@ class MinesweeperGame:
         self.covered = [True] * (width * height)
         self.count_uncovered = 0
 
-        self.neighboring_bomb_counts = []
+        self.bomb_counts = []
         for y in range(self.height):
             for x in range(self.width):
                 neighbors = self.get_neighbors(x, y)
                 bomb_count = [self.is_bomb(*neighbor) for neighbor in neighbors].count(True)
-                self.neighboring_bomb_counts.append(bomb_count)
+                self.bomb_counts.append(bomb_count)
+
+        print(self.bomb_counts)
 
         self.flags = []
+
+    def get_starting_square(self):
+        if self.count_uncovered > 0:
+            raise RuntimeError('The game has already started - starting square cannot be returned.')
+
+        starting_square = None
+        for x in range(self.width):
+            for y in range(self.height):
+                # print(x, y, self.is_bomb(x, y), self.get_bomb_count(x, y))
+                if self.is_bomb(x, y):
+                    continue
+                if starting_square is None or self.get_bomb_count(x, y) > self.get_bomb_count(*starting_square):
+                    starting_square = (x, y)
+
+        self.uncover(*starting_square)
+        return starting_square
 
     def is_covered(self, x: int, y: int):
         return self.covered[self._index(x, y)]
@@ -29,7 +47,7 @@ class MinesweeperGame:
             self.place_flag(x, y)
             return -1
         else:
-            return self.get_neighboring_bomb_count(x, y)
+            return self.get_bomb_count(x, y)
 
     def is_bomb(self, x: int, y: int):
         return self.bombs[self._index(x, y)]
@@ -45,8 +63,8 @@ class MinesweeperGame:
         for x_shift, y_shift in neighbor_translations:
             new_x = x + x_shift
             new_y = y + y_shift
-            if 0 < new_x < self.width and 0 < new_y < self.height:
-                neighbor_coords.append((x, y))
+            if 0 <= new_x < self.width and 0 <= new_y < self.height:
+                neighbor_coords.append((new_x, new_y))
 
         return neighbor_coords
 
@@ -62,13 +80,8 @@ class MinesweeperGame:
             if not self.is_covered(*neighbor)
         ]
 
-    def get_neighboring_bomb_count(self, x: int, y: int):
-        if self.is_covered(x, y):
-            raise ValueError(
-                'The square at (%d, %d) is covered, so you cannot access its neighboring bomb count' % (x, y)
-            )
-
-        return self.neighboring_bomb_counts[self._index(x, y)]
+    def get_bomb_count(self, x: int, y: int):
+        return self.bomb_counts[self._index(x, y)]
 
     def place_flag(self, x: int, y: int):
         if not self.is_bomb(x, y):
@@ -91,7 +104,7 @@ class MinesweeperGame:
                 elif self.is_bomb(x, y):
                     row.append(' * ')
                 else:
-                    bomb_count = self.get_neighboring_bomb_count(x, y)
+                    bomb_count = self.get_bomb_count(x, y)
                     row.append(' %d ' % bomb_count)
             rows.append(row)
 
