@@ -12,7 +12,7 @@ class MinesweeperGame:
         self.neighboring_bomb_counts = []
         for y in range(self.height):
             for x in range(self.width):
-                neighbors = self._generate_neighbor_coords(x, y)
+                neighbors = self.get_neighbors(x, y)
                 bomb_count = [self.is_bomb(*neighbor) for neighbor in neighbors].count(True)
                 self.neighboring_bomb_counts.append(bomb_count)
 
