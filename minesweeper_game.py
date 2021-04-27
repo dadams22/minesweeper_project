@@ -5,6 +5,7 @@ class MinesweeperGame:
 
         self.bombs = [bomb == '1' for bomb in bombs]
         self.covered = [True] * (width * height)
+        self.count_uncovered = 0
 
         self.neighboring_bomb_counts = []
         for y in range(self.height):
@@ -18,6 +19,7 @@ class MinesweeperGame:
 
     def uncover(self, x: int, y: int):
         self.covered[self._index(x, y)] = False
+        self.count_uncovered += 1
 
     def is_bomb(self, x: int, y: int):
         return self.bombs[self._index(x, y)]
@@ -29,6 +31,11 @@ class MinesweeperGame:
         ]
 
     def get_neighboring_bomb_count(self, x: int, y: int):
+        if self.is_covered(x, y):
+            raise ValueError(
+                'The square at (%d, %d) is covered, so you cannot access its neighboring bomb count' % (x, y)
+            )
+
         return self.neighboring_bomb_counts[self._index(x, y)]
 
     def _generate_neighbor_coords(self, x: int, y: int):
