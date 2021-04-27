@@ -4,6 +4,8 @@ class MinesweeperGame:
         self.height = height
 
         self.bombs = [bomb == '1' for bomb in bombs]
+        self.bomb_count = self.bombs.count(True)
+
         self.covered = [True] * (width * height)
         self.count_uncovered = 0
 
