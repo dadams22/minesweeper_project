@@ -25,6 +25,12 @@ class MinesweeperGame:
         self.covered[self._index(x, y)] = False
         self.count_uncovered += 1
 
+        if self.is_bomb(x, y):
+            self.place_flag(x, y)
+            return -1
+        else:
+            return self.get_neighboring_bomb_count(x, y)
+
     def is_bomb(self, x: int, y: int):
         return self.bombs[self._index(x, y)]
 
