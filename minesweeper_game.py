@@ -14,6 +14,8 @@ class MinesweeperGame:
                 bomb_count = [self.is_bomb(*neighbor) for neighbor in neighbors].count(True)
                 self.neighboring_bomb_counts.append(bomb_count)
 
+        self.flags = []
+
     def is_covered(self, x: int, y: int):
         return self.covered[self._index(x, y)]
 
@@ -37,6 +39,14 @@ class MinesweeperGame:
             )
 
         return self.neighboring_bomb_counts[self._index(x, y)]
+
+    def place_flag(self, x: int, y: int):
+        if not self.is_bomb(x, y):
+            raise ValueError('The square at (%d, %d) does not contain a bomb' % (x, y))
+        if (x, y) in self.flags:
+            raise ValueError('The square at (%d, %d) is already flagged' % (x, y))
+
+        self.flags.append((x, y))
 
     def _generate_neighbor_coords(self, x: int, y: int):
         neighbor_translations = [
