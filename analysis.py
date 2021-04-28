@@ -45,6 +45,10 @@ def bomb_density_test(algorithm):
     run_test(algorithm, 'test_cases/test_boards/varied_density', 'Bomb Density', lambda game: game.bomb_count)
 
 
+def board_size_test(algorithm):
+    run_test(algorithm, 'test_cases/test_boards/varied_size', 'Board Size', lambda game: game.height * game.width)
+
+
 def generate_performance_plot(data: Dict, x_label: str, y_label: str):
     sorted_data = sorted(data.items(), key=lambda item: item[0])
     x = []
