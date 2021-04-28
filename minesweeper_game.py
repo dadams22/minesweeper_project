@@ -1,14 +1,15 @@
 import json
+from typing import List
 
 class MinesweeperGame:
     BOMB_LABEL = -1
     
-    def __init__(self, bombs: str, width: int, height: int, debug=False):
+    def __init__(self, bombs: List[bool], width: int, height: int, debug=False):
         self.width = width
         self.height = height
         self.DEBUG = debug
 
-        self.bombs = [bomb == '1' for bomb in bombs]
+        self.bombs = bombs
         self.bomb_count = self.bombs.count(True)
         self.discovered_bomb_count = 0
 
@@ -152,6 +153,8 @@ def load_game_from_file(filepath: str) -> MinesweeperGame:
     with open(filepath, 'r') as board_file:
         board_data = json.load(board_file)
 
-    bombs = board_data['board']
+    board = board_data['board']
+    bombs = [square == '9' for square in board]
+
     height, width = [int(dim) for dim in board_data['dim'].split(',')]
     return MinesweeperGame(bombs, width, height)
