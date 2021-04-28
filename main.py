@@ -6,4 +6,8 @@ if __name__ == '__main__':
 
     print(game.get_starting_square())
 
+    game.place_flag(0, 0)
+
+    game.place_flag(0, 3)
+
     print(str(game))

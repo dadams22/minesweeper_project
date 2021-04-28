@@ -16,8 +16,6 @@ class MinesweeperGame:
                 bomb_count = [self.is_bomb(*neighbor) for neighbor in neighbors].count(True)
                 self.bomb_counts.append(bomb_count)
 
-        print(self.bomb_counts)
-
         self.flags = []
 
     def get_starting_square(self):
@@ -41,7 +39,6 @@ class MinesweeperGame:
 
     def uncover(self, x: int, y: int):
         self.covered[self._index(x, y)] = False
-        self.count_uncovered += 1
 
         if self.is_bomb(x, y):
             self.place_flag(x, y)
@@ -90,6 +87,10 @@ class MinesweeperGame:
             raise ValueError('The square at (%d, %d) is already flagged' % (x, y))
 
         self.flags.append((x, y))
+        self.covered[self._index(x, y)] = False
+
+    def is_flagged(self, x, y):
+        return (x, y) in self.flags
 
     def _index(self, x: int, y: int):
         return (y * self.width) + x
@@ -99,7 +100,9 @@ class MinesweeperGame:
         for y in range(self.height):
             row = []
             for x in range(self.width):
-                if self.is_covered(x, y):
+                if self.is_flagged(x, y):
+                    row.append(' F ')
+                elif self.is_covered(x, y):
                     row.append('   ')
                 elif self.is_bomb(x, y):
                     row.append(' * ')
