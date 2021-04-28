@@ -1,4 +1,6 @@
 class MinesweeperGame:
+    BOMB_LABEL = -1
+    
     def __init__(self, bombs: str, width: int, height: int):
         self.width = width
         self.height = height
@@ -43,7 +45,7 @@ class MinesweeperGame:
 
         if self.is_bomb(x, y):
             self.place_flag(x, y)
-            return -1
+            return self.BOMB_LABEL
         else:
             print('\n' + str(self) + '\n')
             return self.get_label(x, y)
