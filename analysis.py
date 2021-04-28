@@ -16,7 +16,7 @@ def get_all_files(directory_path: str):
     return files
 
 
-def run_test(algorithm, test_boards_directory: str, x_label: str, get_x):
+def run_test(algorithm, test_boards_directory: str, get_x, x_label: str, axs):
     board_files = get_all_files(test_boards_directory)
 
     squares_uncovered_by_x_value = defaultdict(list)
@@ -37,19 +37,26 @@ def run_test(algorithm, test_boards_directory: str, x_label: str, get_x):
         runtimes_by_x_value[x_value].append(runtime)
         squares_uncovered_by_x_value[x_value].append(squares_uncovered)
 
-    generate_performance_plot(runtimes_by_x_value, x_label, 'Runtime (s)')
-    generate_performance_plot(squares_uncovered_by_x_value, x_label, 'Squares Uncovered')
+    generate_performance_plot(runtimes_by_x_value, x_label, 'Runtime (s)', axs[0])
+    generate_performance_plot(squares_uncovered_by_x_value, x_label, 'Squares Uncovered', axs[1])
 
 
-def bomb_density_test(algorithm):
-    run_test(algorithm, 'test_cases/test_boards/varied_density', 'Bomb Density', lambda game: game.bomb_count)
+def bomb_density_test(algorithm, axs):
+    run_test(algorithm, 'test_cases/test_boards/varied_density', lambda game: game.bomb_count, 'Bomb Density', axs)
 
 
-def board_size_test(algorithm):
-    run_test(algorithm, 'test_cases/test_boards/varied_size', 'Board Size', lambda game: game.height * game.width)
+def board_size_test(algorithm, axs):
+    run_test(algorithm, 'test_cases/test_boards/varied_size', lambda game: game.height * game.width, 'Board Size', axs)
 
 
-def generate_performance_plot(data: Dict, x_label: str, y_label: str):
+def run_all_tests(algorithm):
+    fig, axs = plt.subplots(2, 2, figsize=(10, 10))
+
+    bomb_density_test(algorithm, axs[0])
+    board_size_test(algorithm, axs[1])
+
+
+def generate_performance_plot(data: Dict, x_label: str, y_label: str, ax: plt.subplot):
     sorted_data = sorted(data.items(), key=lambda item: item[0])
     x = []
     y_best = []
@@ -61,9 +68,8 @@ def generate_performance_plot(data: Dict, x_label: str, y_label: str):
         y_worst.append(max(y_values))
         y_mean.append(sum(y_values) / len(y_values))
 
-    plt.plot(x, y_best, label='Best %s' % y_label, color='g')
-    plt.plot(x, y_mean, label='Mean %s' % y_label, color='b')
-    plt.plot(x, y_worst, label='Worst %s' % y_label, color='r')
-    plt.title('%s vs. %s' % (y_label, x_label))
-    plt.legend()
-    plt.show()
+    ax.plot(x, y_best, label='Best %s' % y_label, color='g')
+    ax.plot(x, y_mean, label='Mean %s' % y_label, color='b')
+    ax.plot(x, y_worst, label='Worst %s' % y_label, color='r')
+    ax.set_title('%s vs. %s' % (y_label, x_label))
+    ax.legend()
