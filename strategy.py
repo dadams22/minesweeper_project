@@ -1,5 +1,6 @@
-from .minesweeper_game import MinesweeperGame
+from minesweeper_game import MinesweeperGame
 from queue import PriorityQueue
+import random
 
 
 class ProbabilityAlgorithm:
@@ -8,16 +9,15 @@ class ProbabilityAlgorithm:
 
         self.queue = PriorityQueue()
 
-        self.discovered_neighboring_bombs = [0] * (self.width * self.height)
+        self.discovered_neighboring_bombs = [0] * (game.width * game.height)
 
     def play_game(self):
-        current_square = self.game.get_starting_square()
+        starting_square = self.game.get_starting_square()
+        current_square = None
         while not self.game.game_over():
-            covered_neighbors = self.game.get_covered_neighbors(*current_square)
-            if self.get_effective_label(*current_square) == len(covered_neighbors):
-                for neighbor in covered_neighbors:
-                    self.game.place_flag(*neighbor)
-                    self.discovered_neighboring_bombs[self._index(*neighbor)] += 1
+            if current_square is None:
+                covered_squares = self.game.get_covered_squares()
+                self.game.uncover(*random.choice(covered_squares))
 
     def get_effective_label(self, x, y):
         return self.game.get_label(x, y) - self.discovered_neighboring_bombs[self._index(x, y)]
