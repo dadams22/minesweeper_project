@@ -1,5 +1,6 @@
 from os import listdir
 from os.path import isfile, join
+import matplotlib.pyplot as plt
 from collections import defaultdict
 from minesweeper_game import load_game_from_file
 
@@ -27,3 +28,20 @@ def board_density_test(algorithm):
         squares_uncovered = game.count_uncovered
 
         squares_uncovered_by_density[density].append(squares_uncovered)
+
+    squares_uncovered_by_density = sorted(squares_uncovered_by_density.items(), key=lambda item: item[0])
+    densities = []
+    best = []
+    worst = []
+    mean = []
+    for density, uncovered_list in squares_uncovered_by_density:
+        densities.append(density)
+        best.append(min(uncovered_list))
+        worst.append(max(uncovered_list))
+        mean.append(sum(uncovered_list) / len(uncovered_list))
+    
+    plt.plot(densities, best, label='Best Performance')
+    plt.plot(densities, mean, label='Mean Performance')
+    plt.plot(densities, worst, label='Worst Performance')
+    plt.legend()
+    plt.show()
