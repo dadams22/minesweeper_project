@@ -9,12 +9,12 @@ class MinesweeperGame:
         self.covered = [True] * (width * height)
         self.count_uncovered = 0
 
-        self.bomb_counts = []
+        self.labels = []
         for y in range(self.height):
             for x in range(self.width):
                 neighbors = self.get_neighbors(x, y)
-                bomb_count = [self.is_bomb(*neighbor) for neighbor in neighbors].count(True)
-                self.bomb_counts.append(bomb_count)
+                label = [self.is_bomb(*neighbor) for neighbor in neighbors].count(True)
+                self.labels.append(label)
 
         self.flags = []
 
@@ -25,10 +25,9 @@ class MinesweeperGame:
         starting_square = None
         for x in range(self.width):
             for y in range(self.height):
-                # print(x, y, self.is_bomb(x, y), self.get_bomb_count(x, y))
                 if self.is_bomb(x, y):
                     continue
-                if starting_square is None or self.get_bomb_count(x, y) > self.get_bomb_count(*starting_square):
+                if starting_square is None or self.get_label(x, y) > self.get_label(*starting_square):
                     starting_square = (x, y)
 
         self.uncover(*starting_square)
@@ -44,7 +43,7 @@ class MinesweeperGame:
             self.place_flag(x, y)
             return -1
         else:
-            return self.get_bomb_count(x, y)
+            return self.get_label(x, y)
 
     def is_bomb(self, x: int, y: int):
         return self.bombs[self._index(x, y)]
@@ -77,8 +76,8 @@ class MinesweeperGame:
             if not self.is_covered(*neighbor)
         ]
 
-    def get_bomb_count(self, x: int, y: int):
-        return self.bomb_counts[self._index(x, y)]
+    def get_label(self, x: int, y: int):
+        return self.labels[self._index(x, y)]
 
     def place_flag(self, x: int, y: int):
         if not self.is_bomb(x, y):
@@ -107,7 +106,7 @@ class MinesweeperGame:
                 elif self.is_bomb(x, y):
                     row.append(' * ')
                 else:
-                    bomb_count = self.get_bomb_count(x, y)
+                    bomb_count = self.get_label(x, y)
                     row.append(' %d ' % bomb_count)
             rows.append(row)
 
