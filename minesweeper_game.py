@@ -3,9 +3,10 @@ import json
 class MinesweeperGame:
     BOMB_LABEL = -1
     
-    def __init__(self, bombs: str, width: int, height: int):
+    def __init__(self, bombs: str, width: int, height: int, debug=False):
         self.width = width
         self.height = height
+        self.DEBUG = debug
 
         self.bombs = [bomb == '1' for bomb in bombs]
         self.bomb_count = self.bombs.count(True)
@@ -49,10 +50,8 @@ class MinesweeperGame:
             self.place_flag(x, y)
             return self.BOMB_LABEL
         else:
-            print('\n' + str(self) + '\n')
+            self._print_board()
             return self.get_label(x, y)
-
-        return label
 
     def is_bomb(self, x: int, y: int):
         return self.bombs[self._index(x, y)]
@@ -97,7 +96,8 @@ class MinesweeperGame:
         self.flags.append((x, y))
         self.covered[self._index(x, y)] = False
         self.discovered_bomb_count += 1
-        print('\n' + str(self) + '\n')
+
+        self._print_board()
 
     def is_flagged(self, x, y):
         return (x, y) in self.flags
@@ -119,6 +119,10 @@ class MinesweeperGame:
                 if self.is_covered(x, y):
                     covered_squares.append((x, y))
         return covered_squares
+
+    def _print_board(self):
+        if self.DEBUG:
+            print('\n' + str(self) + '\n')
 
     def _index(self, x: int, y: int):
         return (y * self.width) + x
