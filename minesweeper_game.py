@@ -102,7 +102,10 @@ class MinesweeperGame:
 
     def game_over(self) -> bool:
         if self.discovered_bomb_count == self.bomb_count:
-            print('\nGame Over - %d tiles uncovered' % self.count_uncovered)
+            print(
+                '\nGame Over - %d tiles uncovered, %d bombs found'
+                % (self.count_uncovered, self.discovered_bomb_count)
+            )
             return True
         else:
             return False
