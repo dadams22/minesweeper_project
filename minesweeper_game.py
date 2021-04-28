@@ -42,9 +42,13 @@ class MinesweeperGame:
 
         if self.is_bomb(x, y):
             self.place_flag(x, y)
-            return -1
+            label = -1
         else:
-            return self.get_label(x, y)
+            label = self.get_label(x, y)
+
+        print('\n' + str(self) + '\n')
+
+        return label
 
     def is_bomb(self, x: int, y: int):
         return self.bombs[self._index(x, y)]
@@ -94,14 +98,18 @@ class MinesweeperGame:
         return (x, y) in self.flags
 
     def game_over(self) -> bool:
-        return self.discovered_bomb_count == self.bomb_count
+        if self.discovered_bomb_count == self.bomb_count:
+            print('\nGame Over - %d tiles uncovered' % self.count_uncovered)
+            return True
+        else:
+            return False
 
     def get_covered_squares(self):
         covered_squares = []
         for x in range(self.width):
             for y in range(self.height):
                 if self.is_covered(x, y):
-                    covered_squares.append(x, y)
+                    covered_squares.append((x, y))
         return covered_squares
 
     def _index(self, x: int, y: int):
