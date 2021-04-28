@@ -96,6 +96,14 @@ class MinesweeperGame:
     def game_over(self) -> bool:
         return self.discovered_bomb_count == self.bomb_count
 
+    def get_covered_squares(self):
+        covered_squares = []
+        for x in range(self.width):
+            for y in range(self.height):
+                if self.is_covered(x, y):
+                    covered_squares.append(x, y)
+        return covered_squares
+
     def _index(self, x: int, y: int):
         return (y * self.width) + x
 
