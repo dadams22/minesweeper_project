@@ -5,6 +5,7 @@ class MinesweeperGame:
 
         self.bombs = [bomb == '1' for bomb in bombs]
         self.bomb_count = self.bombs.count(True)
+        self.discovered_bomb_count = 0
 
         self.covered = [True] * (width * height)
         self.count_uncovered = 0
@@ -87,9 +88,13 @@ class MinesweeperGame:
 
         self.flags.append((x, y))
         self.covered[self._index(x, y)] = False
+        self.discovered_bomb_count += 1
 
     def is_flagged(self, x, y):
         return (x, y) in self.flags
+
+    def game_over(self) -> bool:
+        return self.discovered_bomb_count == self.bomb_count
 
     def _index(self, x: int, y: int):
         return (y * self.width) + x
