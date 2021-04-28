@@ -1,3 +1,5 @@
+import json
+
 class MinesweeperGame:
     BOMB_LABEL = -1
     
@@ -139,3 +141,12 @@ class MinesweeperGame:
 
         rows = ['|'.join(row) for row in rows]
         return '\n'.join(rows)
+
+
+def load_game_from_file(filepath: str) -> MinesweeperGame:
+    with open(filepath, 'r') as board_file:
+        board_data = json.load(board_file)
+
+    bombs = board_data['board']
+    width, height = [int(dim) for dim in board_data['dim'].split(',')]
+    return MinesweeperGame(bombs, width, height)

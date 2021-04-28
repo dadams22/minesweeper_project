@@ -1,9 +1,9 @@
-from minesweeper_game import MinesweeperGame
+from minesweeper_game import MinesweeperGame, load_game_from_file
 from strategy import ProbabilityAlgorithm
 
 
 if __name__ == '__main__':
-    game = MinesweeperGame('110001110000111', 5, 3)
+    game = load_game_from_file('test_cases/test_boards/varied_density/20_20_2_0.json')
 
     minesweeper_player = ProbabilityAlgorithm(game)
     minesweeper_player.play_game()
