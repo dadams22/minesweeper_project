@@ -1,5 +1,4 @@
 from minesweeper_game import MinesweeperGame
-from queue import PriorityQueue
 import random
 
 

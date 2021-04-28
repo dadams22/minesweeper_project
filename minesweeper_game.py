@@ -1,6 +1,7 @@
 import json
 from typing import List
 
+
 class MinesweeperGame:
     BOMB_LABEL = -1
     

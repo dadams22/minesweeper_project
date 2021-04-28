@@ -3,7 +3,7 @@ from os.path import isfile, join
 import matplotlib.pyplot as plt
 from collections import defaultdict
 from typing import Dict
-from minesweeper_game import MinesweeperGame, load_game_from_file
+from minesweeper_game import load_game_from_file
 from timeit import default_timer as timer
 
 
