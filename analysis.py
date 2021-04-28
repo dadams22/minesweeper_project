@@ -41,7 +41,7 @@ def run_test(algorithm, test_boards_directory: str, x_label: str, get_x):
     generate_performance_plot(squares_uncovered_by_x_value, x_label, 'Squares Uncovered')
 
 
-def board_density_test(algorithm):
+def bomb_density_test(algorithm):
     run_test(algorithm, 'test_cases/test_boards/varied_density', 'Bomb Density', lambda game: game.bomb_count)
 
 
