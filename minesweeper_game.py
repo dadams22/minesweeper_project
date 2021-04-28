@@ -39,14 +39,14 @@ class MinesweeperGame:
 
     def uncover(self, x: int, y: int):
         self.covered[self._index(x, y)] = False
+        self.count_uncovered += 1
 
         if self.is_bomb(x, y):
             self.place_flag(x, y)
-            label = -1
+            return -1
         else:
-            label = self.get_label(x, y)
-
-        print('\n' + str(self) + '\n')
+            print('\n' + str(self) + '\n')
+            return self.get_label(x, y)
 
         return label
 
@@ -93,6 +93,7 @@ class MinesweeperGame:
         self.flags.append((x, y))
         self.covered[self._index(x, y)] = False
         self.discovered_bomb_count += 1
+        print('\n' + str(self) + '\n')
 
     def is_flagged(self, x, y):
         return (x, y) in self.flags
