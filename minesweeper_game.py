@@ -4,7 +4,7 @@ from typing import List
 
 class MinesweeperGame:
     BOMB_LABEL = -1
-    
+
     def __init__(self, bombs: List[bool], width: int, height: int, debug=False):
         self.width = width
         self.height = height
@@ -21,14 +21,16 @@ class MinesweeperGame:
         for y in range(self.height):
             for x in range(self.width):
                 neighbors = self.get_neighbors(x, y)
-                label = [self.is_bomb(*neighbor) for neighbor in neighbors].count(True)
+                label = [self.is_bomb(*neighbor)
+                         for neighbor in neighbors].count(True)
                 self.labels.append(label)
 
         self.flags = []
 
     def get_starting_square(self):
         if self.count_uncovered > 0:
-            raise RuntimeError('The game has already started - starting square cannot be returned.')
+            raise RuntimeError(
+                'The game has already started - starting square cannot be returned.')
 
         starting_square = None
         for x in range(self.width):
@@ -91,9 +93,11 @@ class MinesweeperGame:
 
     def place_flag(self, x: int, y: int):
         if not self.is_bomb(x, y):
-            raise ValueError('The square at (%d, %d) does not contain a bomb' % (x, y))
+            raise ValueError(
+                'The square at (%d, %d) does not contain a bomb' % (x, y))
         if (x, y) in self.flags:
-            raise ValueError('The square at (%d, %d) is already flagged' % (x, y))
+            raise ValueError(
+                'The square at (%d, %d) is already flagged' % (x, y))
 
         self.flags.append((x, y))
         self.covered[self._index(x, y)] = False

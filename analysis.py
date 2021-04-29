@@ -37,16 +37,20 @@ def run_test(algorithm, test_boards_directory: str, get_x, x_label: str, axs):
         runtimes_by_x_value[x_value].append(runtime)
         squares_uncovered_by_x_value[x_value].append(squares_uncovered)
 
-    generate_performance_plot(runtimes_by_x_value, x_label, 'Runtime (s)', axs[0])
-    generate_performance_plot(squares_uncovered_by_x_value, x_label, 'Squares Uncovered', axs[1])
+    generate_performance_plot(
+        runtimes_by_x_value, x_label, 'Runtime (s)', axs[0])
+    generate_performance_plot(
+        squares_uncovered_by_x_value, x_label, 'Squares Uncovered', axs[1])
 
 
 def bomb_density_test(algorithm, axs):
-    run_test(algorithm, 'test_cases/test_boards/varied_density', lambda game: game.bomb_count, 'Bomb Density', axs)
+    run_test(algorithm, 'test_cases/test_boards/varied_density',
+             lambda game: game.bomb_count, 'Bomb Density', axs)
 
 
 def board_size_test(algorithm, axs):
-    run_test(algorithm, 'test_cases/test_boards/varied_size', lambda game: game.height * game.width, 'Board Size', axs)
+    run_test(algorithm, 'test_cases/test_boards/varied_size',
+             lambda game: game.height * game.width, 'Board Size', axs)
 
 
 def run_all_tests(algorithm):

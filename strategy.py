@@ -49,7 +49,8 @@ class ProbabilityAlgorithm:
 
     def _get_target_square(self):
         if self.open_list:
-            target = max(self.open_list, key=lambda coord: self._bomb_probability(*coord))
+            target = max(self.open_list,
+                         key=lambda coord: self._bomb_probability(*coord))
             if self._bomb_probability(*target) > 0:
                 return target
         return None
